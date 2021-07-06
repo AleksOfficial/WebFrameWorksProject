@@ -1,0 +1,22 @@
+<mat-card>
+    <mat-spinner *ngIf="isLoading"></mat-spinner>
+    <div *ngIf="!isLoading && isLoggedIn">
+        <div>
+            <mat-form-field appearance="outline">
+                <mat-label>Enter your Highscore</mat-label>
+                <input matInput placeholder="666" [formControl]="highScore">
+                <mat-error *ngIf="highScore.invalid">{{getHighScoreErrorMessage()}}</mat-error>
+            </mat-form-field>
+            <button mat-raised-button (click)="sendHighScore()">Send Highscore</button>
+        </div>
+        <div>
+            <a mat-raised-button color="accent" type="button" routerLink="/highscores">Show Highscores</a>
+        </div>
+        <div>
+            <button mat-raised-button color="warn" type="button" (click)="logout()">Logout</button>
+        </div>
+    </div>
+    <div *ngIf="!isLoading && !isLoggedIn">
+        This page is only visible after login!
+    </div>
+</mat-card>
