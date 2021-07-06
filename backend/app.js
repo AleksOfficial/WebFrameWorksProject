@@ -115,7 +115,11 @@ app.get("/highscore", (req, res, next)=> {
         });
     } else {
         if (validateToken(req.query.email, req.query.token)) {
-            res.status(200).json(store.get("highScores"));
+            Highscore.find().then( (docs) => {
+                console.log(docs);
+                res.status(200).json(store.get("highScores"));
+            }
+            );
         } else {
             res.status(401).json({
                 message: "Error validating user. Please log in to see highscores!"
