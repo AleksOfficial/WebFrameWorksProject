@@ -6,6 +6,7 @@ store.set("highScores", { highScores: [] });
 const mongoose = require('mongoose');
 
 const Highscore = require('./schemas/highscore');
+const UserData = require('./schemas/user-data');
 
 mongoose.connect("mongodb+srv://webfrfinex:webfrfinex@webfrfinalproject.krvha.mongodb.net/webfrfinex?retryWrites=true&w=majority")
     .then(()=> {
