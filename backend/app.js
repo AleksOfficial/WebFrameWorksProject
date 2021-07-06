@@ -7,7 +7,7 @@ const mongoose = require('mongoose');
 
 const Highscore = require('./schemas/highscore');
 
-mongoose.connect("mongodb+srv://webfrfinex:webfrfinex@webfrfinalproject.krvha.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
+mongoose.connect("mongodb+srv://webfrfinex:webfrfinex@webfrfinalproject.krvha.mongodb.net/webfrfinex?retryWrites=true&w=majority")
     .then(()=> {
         console.log("Connected to DB");
     })
@@ -161,6 +161,11 @@ function addHighScore(highScore, userName) {
     let highScores = store.get("highScores");
     highScores.highScores.push({ score: highScore, user: userName });
     store.set("highScores", highScores);
+    const newHighscore = new Highscore({
+        email: userName,
+        value: highScore
+    });
+    newHighscore.save();
 }
 
 function validateToken(email, token) {
