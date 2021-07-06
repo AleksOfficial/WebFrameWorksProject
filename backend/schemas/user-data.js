@@ -6,7 +6,8 @@ const userDataSchema = mongoose.Schema({
     password: String,
     street: String, 
     city: String, 
-    postcode: String 
+    postcode: String,
+    token: String
 });
 
 module.exports = mongoose.model('UserData', userDataSchema);

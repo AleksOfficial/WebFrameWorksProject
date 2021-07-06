@@ -46,27 +46,34 @@ app.post("/signup", (req, res, next) => {
             message: "Username or password missing!"
         });
     } else {
-        if (store.get(req.body.email) == undefined) {
-            store.set(req.body.email, {
-                password: req.body.password
-            });
-            let authenticationToken = login(req.body.email, req.body.password);
-            if (authenticationToken != null){
-                res.status(200).json({
-                    message: "Created new account!",
-                    currentToken: authenticationToken
+        UserData.find({email: req.body.email}).then((docs) => {
+            if(docs.length > 0) {
+                res.status(409).json({
+                    message: "Account already exists!"
                 });
             } else {
-                store.remove(req.body.email);
-                res.status(500).json({
-                    message: "Error creating new account!"
-                })
+                const userdata = new UserData( {
+                    email: req.body.email,
+                    password: req.body.password,
+                    street: req.body.street, 
+                    city: req.body.city, 
+                    postcode: req.body.postcode,
+                });
+                userdata.save();
+                let authenticationToken = login(req.body.email,req.body.password);
+                console.log(authenticationToken)
+                if (authenticationToken != null){
+                    res.status(200).json({
+                        message: "Created new account!",
+                        currentToken: authenticationToken
+                    });
+                } else {
+                    res.status(500).json({
+                        message: "Error creating new account!"
+                    })
+                }
             }
-        } else {
-            res.status(409).json({
-                message: "Account already exists!"
-            });
-        }
+        })
     }
 });
 
@@ -116,8 +123,8 @@ app.get("/highscore", (req, res, next)=> {
     } else {
         if (validateToken(req.query.email, req.query.token)) {
             Highscore.find().then( (docs) => {
-                console.log(docs);
-                res.status(200).json(store.get("highScores"));
+                let r = { highScores:docs };
+                res.status(200).json(r);
             }
             );
         } else {
@@ -152,20 +159,20 @@ app.delete("/logout", (req, res, next)=> {
 module.exports = app;
 
 function login(username, password) {
-    let userdata = store.get(username);
-    if (userdata != undefined && userdata.password == password) {
-        let authenticationToken = Math.random().toString(36).substr(2, 8);
-        userdata.currentToken = authenticationToken;
-        store.set(username, userdata);
-        return authenticationToken;
-    }
-    return null;
+    let authenticationToken = null;
+    const query = await UserData.find({email:username, password: password});
+    console.log(query);
+    /*.then((docs) => {
+        console.log(docs);
+        if(docs.length==1) {
+            authenticationToken = Math.random().toString(36).substr(2, 8);
+            UserData.findOneAndUpdate({email: username, password: password},{token:authenticationToken});
+        }
+    })*/
+    return authenticationToken;
 }
 
 function addHighScore(highScore, userName) {
-    let highScores = store.get("highScores");
-    highScores.highScores.push({ score: highScore, user: userName });
-    store.set("highScores", highScores);
     const newHighscore = new Highscore({
         email: userName,
         value: highScore

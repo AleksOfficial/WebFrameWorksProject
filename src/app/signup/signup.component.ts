@@ -15,7 +15,10 @@ export class SignupComponent implements OnInit {
       email: ['', [Validators.email, Validators.required]],
       password: ['', Validators.required],
       passwordConfirm: ['', Validators.required],
-      postalCode: ['', Validators.pattern("[0-9]+")]
+      street: [''],
+      city: [''],
+      postcode: ['', Validators.pattern("[0-9]+")],
+
     }, {
       validator: MustMatch("password", "passwordConfirm")
     }
@@ -46,18 +49,21 @@ export class SignupComponent implements OnInit {
     return this.registerForm.get("email")!.hasError('email') ? 'Not a valid email address' : '';
   }
 
-  getPostalCodeErrorMessage() {
-    return this.registerForm.get("postalCode")!.hasError("pattern") ? "Enter valid postal code (numbers only)" : "";
+  getPostcodeErrorMessage() {
+    return this.registerForm.get("postcode")!.hasError("pattern") ? "Enter valid postal code (numbers only)" : "";
   }
 
   onSubmit() {
     if (this.getEmailErrorMessage() == ''
         && this.getPasswordConfirmErrorMessage() == ''
         && this.getPasswordErrorMessage() == ''
-        && this.getPostalCodeErrorMessage() == '') {
+        && this.getPostcodeErrorMessage() == '') {
       this.http.post<{ message: string, currentToken: string }>("http://localhost:3000/signup", {
         email: this.registerForm.get("email")!.value,
-        password: this.registerForm.get("password")!.value
+        password: this.registerForm.get("password")!.value,
+        street: this.registerForm.get("street")!.value,
+        city: this.registerForm.get("city")!.value,
+        postcode: this.registerForm.get("postcode")!.value
       }, this.httpOptions).subscribe({
         next: (responseData) => {
             this.openSnackBar(responseData.message, 3000);

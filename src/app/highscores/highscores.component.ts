@@ -21,8 +21,10 @@ export class HighscoresComponent implements OnInit {
       let token = localStorage.getItem("authenticationToken")!;
       this.http.get<{ highScores: any[] }>("http://localhost:3000/highscore?email=" + email + "&token=" + token, this.httpOptions)
           .subscribe({
-            next: (responseData)=> {
-              this.highScores = responseData.highScores
+            next: (responseData) => {
+              console.log(responseData);
+              this.highScores = responseData.highScores;
+
             },
             error: (err)=> {
               console.log(err);

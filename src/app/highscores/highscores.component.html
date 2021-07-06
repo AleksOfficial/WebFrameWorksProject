@@ -3,7 +3,7 @@
     <div *ngIf="!isLoading && isLoggedIn">
         <ul>
             <li *ngFor="let score of highScores">
-                {{score.user}} | {{score.score}}
+                {{score.email}} | {{score.value}}
             </li>
         </ul>
         <a mat-raised-button color="accent" type="button" routerLink="/supersecretprivateuserspace">Back</a>
