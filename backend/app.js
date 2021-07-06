@@ -3,6 +3,18 @@ const cors = require('cors');
 const app = express();
 const store = require('store');
 store.set("highScores", { highScores: [] });
+const mongoose = require('mongoose');
+
+const Highscore = require('./schemas/highscore');
+
+mongoose.connect("mongodb+srv://webfrfinex:webfrfinex@webfrfinalproject.krvha.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
+    .then(()=> {
+        console.log("Connected to DB");
+    })
+    .catch(()=> {
+        console.log("Connection failed");
+    })
+
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));

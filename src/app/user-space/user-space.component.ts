@@ -66,6 +66,7 @@ export class UserSpaceComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    //this.isLoading = true;
     let email = localStorage.getItem("email");
     let token = localStorage.getItem("authenticationToken");
     if (email != null && token != null) {
@@ -74,9 +75,11 @@ export class UserSpaceComponent implements OnInit {
           next: (responseData) => {
               if (responseData.valid) {
                 this.isLoggedIn = true;
+                this.isLoading = false;
               }
             },
           error: (err) => {
+            this.isLoading = false;
             this.isLoggedIn = false;
           }
       });

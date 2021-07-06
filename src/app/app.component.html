@@ -5,6 +5,6 @@
     <span>FHTW Puzzle Game</span>
     <span class="spacer"></span>
     <a mat-raised-button color="primary" type="button" routerLink="/login">Login</a>
-    <a mat-raised-button color="primary" type="button" routerLink="/signup">Sign Up</a>
+    <a mat-raised-button color="primary" type="button" routerLink="/signup" *ngIf="!loggedIn">Sign Up</a>
 </mat-toolbar>
 <router-outlet></router-outlet>

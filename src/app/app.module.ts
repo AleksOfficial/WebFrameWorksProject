@@ -19,6 +19,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { HighscoresComponent } from './highscores/highscores.component';
+import { PuzzleComponent } from './puzzle/puzzle.component';
+import {MatGridListModule} from '@angular/material/grid-list';
 
 @NgModule({
   declarations: [
@@ -26,7 +28,8 @@ import { HighscoresComponent } from './highscores/highscores.component';
     LoginComponent,
     SignupComponent,
     UserSpaceComponent,
-    HighscoresComponent
+    HighscoresComponent,
+    PuzzleComponent
   ],
   imports: [
     BrowserModule,
@@ -42,7 +45,8 @@ import { HighscoresComponent } from './highscores/highscores.component';
     MatProgressSpinnerModule,
     MatToolbarModule,
     HttpClientModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatGridListModule
   ],
   providers: [],
   bootstrap: [AppComponent]

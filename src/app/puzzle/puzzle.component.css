@@ -1,0 +1,13 @@
+mat-grid-list {
+  max-width: 453px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.game {
+  text-align: center;
+}
+
+.selected {
+  filter: brightness(0.5);
+}
