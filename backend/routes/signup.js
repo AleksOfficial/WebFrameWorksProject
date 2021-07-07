@@ -23,9 +23,7 @@ app.post("/",  async function (req, res, next) {
               token: ''
           });
           const ret = await userdata.save();
-          //console.log(ret)
           let authenticationToken = await login(req.body.email,req.body.password);
-          //console.log(authenticationToken)
           if (authenticationToken != null){
               res.status(200).json({
                   message: "Created new account!",
@@ -37,7 +35,6 @@ app.post("/",  async function (req, res, next) {
               })
           }
       }
-      //console.log("Post request complete");
       }}); 
 
 const login = async function(username, password) {

@@ -58,7 +58,7 @@ export class SignupComponent implements OnInit {
         && this.getPasswordConfirmErrorMessage() == ''
         && this.getPasswordErrorMessage() == ''
         && this.getPostcodeErrorMessage() == '') {
-      this.http.post<{ message: string, currentToken: string }>("http://localhost:3000/signup", {
+      this.http.post<{ message: string, token: string }>("http://localhost:3000/signup", {
         email: this.registerForm.get("email")!.value,
         password: this.registerForm.get("password")!.value,
         street: this.registerForm.get("street")!.value,
@@ -67,8 +67,7 @@ export class SignupComponent implements OnInit {
       }, this.httpOptions).subscribe({
         next: (responseData) => {
             this.openSnackBar(responseData.message, 3000);
-            console.log(responseData.currentToken)
-            localStorage.setItem("authenticationToken", responseData.currentToken);
+            localStorage.setItem("authenticationToken", responseData.token);
             localStorage.setItem("email", this.registerForm.get("email")!.value);
             this.router.navigate(["/supersecretprivateuserspace"]);
           },

@@ -1,5 +1,6 @@
 var express = require('express');
 var app = express.Router();
+const UserData = require('../schemas/user-data');
 
 
 app.post("/", async function(req, res, next) {
@@ -21,6 +22,7 @@ app.post("/", async function(req, res, next) {
       }
   }
 });
+
 const login = async function(username, password) {
     let authenticationToken = null;
     const query = await UserData.find({email:username, password:password})
