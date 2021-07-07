@@ -45,6 +45,7 @@ export class LoginComponent implements OnInit {
     }, this.httpOptions).subscribe({
       next: (responseData) => {
         this.openSnackBar(responseData.message, 3000);
+        console.log(responseData.currentToken);
         localStorage.setItem("authenticationToken", responseData.currentToken);
         localStorage.setItem("email", this.email.value);
         this.router.navigate(["/supersecretprivateuserspace"]);

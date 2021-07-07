@@ -18,13 +18,13 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 
-app.post("/login", (req, res, next) => {
+app.post("/login", async function(req, res, next) {
     if (req.body.email == undefined || req.body.password == undefined) {
         res.status(400).json({
             message: "Username or password missing!"
         });
     } else {
-        let authenticationToken = login(req.body.email, req.body.password);
+        let authenticationToken = await login(req.body.email, req.body.password);
         if (authenticationToken != null){
             res.status(200).json({
                 message: "Login successful",
@@ -82,11 +82,13 @@ app.get("/checklogin", async function (req, res, next) {
             message: "Username or token missing!"
         });
     } else {
-        if (validateToken(req.query.email, req.query.token)) {
+        if (await validateToken(req.query.email, req.query.token)) {
+            console.log("valid token is true");
             res.status(200).json({
                 valid: true
             });
         } else {
+            console.log("valid token is false");
             res.status(401).json({
                 valid: false
             });
@@ -94,13 +96,13 @@ app.get("/checklogin", async function (req, res, next) {
     }
 });
 
-app.post("/highscore", (req, res, next)=> {
+app.post("/highscore", async function(req, res, next) {
     if (req.body.email == undefined || req.body.currentToken == undefined || req.body.highScore == undefined || typeof req.body.highScore != "number") {
         res.status(400).json({
             message: "Username, token or highscore missing or wrong format!"
         });
     } else {
-        if (validateToken(req.body.email , req.body.currentToken)) {
+        if (await validateToken(req.body.email , req.body.currentToken)) {
             addHighScore(req.body.highScore, req.body.email);
             res.status(200).json({
                 message: "Highscore added!"
@@ -154,6 +156,7 @@ app.delete("/logout", (req, res, next)=> {
 
 
 app.get("/getUserData", (req, res, next) => {
+    console.log(req.query.email + " " + req.query.token);
     if (req.query.email == undefined || req.query.token == undefined) {
         res.status(400).json({
             message: "Username or token missing!"
@@ -205,6 +208,9 @@ const addHighScore = async function(highScore, email) {
 }        
 
 const validateToken = async function (email, token) {
+    console.log(token);
     const data = await UserData.find({email:email});
+    console.log(data[0]);
+    console.log(data != undefined && data[0].token == token);
     return data != undefined && data[0].token == token;
 }

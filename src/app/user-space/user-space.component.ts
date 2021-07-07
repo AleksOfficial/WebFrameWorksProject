@@ -74,6 +74,7 @@ export class UserSpaceComponent implements OnInit {
                     this.httpOptions).subscribe({
           next: (responseData) => {
               if (responseData.valid) {
+                console.log(responseData.valid);
                 this.isLoggedIn = true;
                 this.isLoading = false;
               }
