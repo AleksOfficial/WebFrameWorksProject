@@ -40,44 +40,45 @@ app.post("/login", (req, res, next) => {
     }
 });
 
-app.post("/signup", (req, res, next) => {
+app.post("/signup",  async function (req, res, next) {
     if (req.body.email == undefined || req.body.password == undefined) {
         res.status(400).json({
             message: "Username or password missing!"
         });
     } else {
-        UserData.find({email: req.body.email}).then((docs) => {
-            if(docs.length > 0) {
+        const data = await UserData.find({email: req.body.email});
+        if(data.length > 0) {
                 res.status(409).json({
                     message: "Account already exists!"
                 });
-            } else {
-                const userdata = new UserData( {
-                    email: req.body.email,
-                    password: req.body.password,
-                    street: req.body.street, 
-                    city: req.body.city, 
-                    postcode: req.body.postcode,
+        } else {
+            const userdata = new UserData( {
+                email: req.body.email,
+                password: req.body.password,
+                street: req.body.street, 
+                city: req.body.city, 
+                postcode: req.body.postcode,
+                token: ''
+            });
+            const ret = await userdata.save();
+            //console.log(ret)
+            let authenticationToken = login(req.body.email,req.body.password);
+            //console.log(authenticationToken)
+            if (authenticationToken != null){
+                res.status(200).json({
+                    message: "Created new account!",
+                    token: authenticationToken
                 });
-                userdata.save();
-                let authenticationToken = login(req.body.email,req.body.password);
-                console.log(authenticationToken)
-                if (authenticationToken != null){
-                    res.status(200).json({
-                        message: "Created new account!",
-                        currentToken: authenticationToken
-                    });
-                } else {
-                    res.status(500).json({
-                        message: "Error creating new account!"
-                    })
-                }
+            } else {
+                res.status(500).json({
+                    message: "Error creating new account!" 
+                })
             }
-        })
-    }
-});
+        }
+        //console.log("Post request complete");
+        }}); 
 
-app.get("/checklogin", (req, res, next)=> {
+app.get("/checklogin", async function (req, res, next) {
     if (req.query.email == undefined || req.query.token == undefined) {
         res.status(400).json({
             message: "Username or token missing!"
@@ -158,29 +159,25 @@ app.delete("/logout", (req, res, next)=> {
 
 module.exports = app;
 
-function login(username, password) {
+const login = async function(username, password) {
     let authenticationToken = null;
-    const query = await UserData.find({email:username, password: password});
-    console.log(query);
-    /*.then((docs) => {
-        console.log(docs);
-        if(docs.length==1) {
-            authenticationToken = Math.random().toString(36).substr(2, 8);
-            UserData.findOneAndUpdate({email: username, password: password},{token:authenticationToken});
-        }
-    })*/
+    const query = await UserData.find({email:username, password:password})
+    if(query.length==1) {
+        authenticationToken = Math.random().toString(36).substr(2, 8);
+        const x = await UserData.findOneAndUpdate({email: username, password: password},{token:authenticationToken});
+    }
     return authenticationToken;
 }
 
-function addHighScore(highScore, userName) {
+const addHighScore = async function(highScore, userName) {
     const newHighscore = new Highscore({
         email: userName,
         value: highScore
     });
-    newHighscore.save();
+    await newHighscore.save();
 }
 
-function validateToken(email, token) {
-    let data = store.get(email);
-    return data != undefined && data.currentToken == token;
+const validateToken = async function (email, token) {
+    const data = await UserData.find({email:email});
+    return data != undefined && data[0].token == token;
 }

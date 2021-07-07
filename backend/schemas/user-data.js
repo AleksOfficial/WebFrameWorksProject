@@ -9,5 +9,5 @@ const userDataSchema = mongoose.Schema({
     postcode: String,
     token: String
 });
-
+console.log(mongoose.model('UserData', userDataSchema));
 module.exports = mongoose.model('UserData', userDataSchema);
