@@ -55,15 +55,18 @@ const addHighScore = async function(highScore, email) {
   const x = await Highscore.find().sort({value:"desc"});
   if (x.length>=10)
   {
-      if(x[x.length-1].value<highScore)
+      if(x[9].value<highScore)
       {
           //delete last value
-          const _ = await Highscore.findOneAndRemove({email: x[9].email, value: x[9].value});
+          const y = await Highscore.find({email:x[9].email});
+          if (y.length > 0){
+            const _ = await Highscore.findOneAndRemove({email: x[9].email, value: x[9].value});
+          }
       }
       else 
       {
           const _ = await Highscore.find({email:email}).sort({value:"desc"});
-          if(highScore<_.value)
+          if(_.length > 0 && highScore<_[0].value)
               return;
           else
               await Highscore.findOneAndRemove({email: email, value: _.value});

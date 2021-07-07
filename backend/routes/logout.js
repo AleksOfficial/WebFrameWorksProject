@@ -1,5 +1,6 @@
 var express = require('express');
 var app = express.Router();
+const UserData = require('../schemas/user-data');
 
 app.delete("/", (req, res, next)=> {
   if (req.query.email == undefined || req.query.token == undefined) {

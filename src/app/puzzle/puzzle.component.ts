@@ -55,7 +55,23 @@ export class PuzzleComponent implements OnInit {
     if (this.game.checkForWin()) {
       this.started = false;
       clearInterval(this.timeFunction);
+      this.addHighscore();
     }
+  }
+
+  addHighscore() {
+      this.http.post<{ message: string }>("http://localhost:3000/highscore", {
+        email: localStorage.getItem("email"),
+        currentToken: localStorage.getItem("authenticationToken"),
+        highScore: parseInt(this.highScore.value)
+      }, this.httpOptions).subscribe({
+        next: (responseData) => {
+            this.openSnackBar(responseData.message, 3000);
+          },
+        error: (err) => {
+          this.openSnackBar(err.error.message, 3000);
+        }
+      });
   }
 
   clickImage(n: number, event: MouseEvent) {
