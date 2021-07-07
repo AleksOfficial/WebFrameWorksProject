@@ -1,0 +1,22 @@
+.bold {
+  font-weight: bold;
+}
+
+.large {
+  font-size: large;
+}
+
+.profile-info {
+  text-align: center;
+}
+
+.profile-info table {
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 30px;
+}
+
+.profile-info table td {
+  width: 200px;
+  margin-top: 30px;
+}

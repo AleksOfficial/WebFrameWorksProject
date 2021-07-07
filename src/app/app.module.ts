@@ -21,6 +21,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { HighscoresComponent } from './highscores/highscores.component';
 import { PuzzleComponent } from './puzzle/puzzle.component';
 import {MatGridListModule} from '@angular/material/grid-list';
+import { ProfileComponent } from './profile/profile.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import {MatGridListModule} from '@angular/material/grid-list';
     SignupComponent,
     UserSpaceComponent,
     HighscoresComponent,
-    PuzzleComponent
+    PuzzleComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,
