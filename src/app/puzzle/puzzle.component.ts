@@ -14,6 +14,10 @@ export class PuzzleComponent implements OnInit {
   game: Game = new Game();
   choice1: number = -1;
   started: boolean = false;
+  hundreths: number = 0;
+  seconds: number = 0;
+  minutes: number = 0;
+  timeFunction: any;
 
   constructor(private _auth: AuthService) {}
 
@@ -24,9 +28,23 @@ export class PuzzleComponent implements OnInit {
   }
 
   start() {
+    this.hundreths = 0;
+    this.seconds = 0;
+    this.minutes = 0;
     this.game.shuffle();
     this.updatePaths();
     this.started = true;
+    this.timeFunction = setInterval(()=>{
+      this.hundreths += 20;
+      if (this.hundreths % 100 == 0) {
+        this.hundreths = 0;
+        this.seconds++;
+        if (this.seconds % 60 == 0) {
+          this.seconds = 0;
+          this.minutes++;
+        }
+      }
+    }, 200);
   }
 
   updatePaths() {
@@ -36,6 +54,7 @@ export class PuzzleComponent implements OnInit {
     }
     if (this.game.checkForWin()) {
       this.started = false;
+      clearInterval(this.timeFunction);
     }
   }
 

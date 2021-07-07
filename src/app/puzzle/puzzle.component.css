@@ -6,8 +6,18 @@ mat-grid-list {
 
 .game {
   text-align: center;
+  margin-top: 20px;
 }
 
 .selected {
   filter: brightness(0.5);
+}
+
+.clock,
+.start {
+  border-radius: 5px;
+  border-width: 3px;
+  border-style: solid;
+  width: 300px;
+  margin: 20px auto;
 }
