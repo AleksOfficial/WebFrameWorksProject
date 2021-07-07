@@ -10,7 +10,7 @@ app.get("/", (req, res, next) => {
       });
   } else {
       if (validateToken(req.query.email, req.query.token)) {
-          UserData.find(req.query.email).then((docs)=> {
+          UserData.find({email: req.query.email}).then((docs)=> {
             res.status(200).json(docs[0]);
           });
       }

@@ -65,6 +65,19 @@ export class ProfileComponent implements OnInit {
               console.log(err);
             }
           });
+      this.http.get<{ 
+        email: string,
+        value: number
+       }>("http://localhost:3000/getHighscore?email=" + email + "&token=" + token, this.httpOptions)
+          .subscribe({
+            next: (responseData) => {
+              console.log(responseData);
+              this.highestScore = responseData.value.toString();
+            },
+            error: (err)=> {
+              console.log(err);
+            }
+          });
     }
   }
 

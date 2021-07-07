@@ -12,7 +12,7 @@ let getuserdataRouter   = require('./routes/getUserData');
 let loginRouter         = require('./routes/login');
 let checkloginRouter    = require('./routes/checklogin');
 let logoutRouter        = require('./routes/logout');
-let gethighscoreRouter     = require('./routes/highscore');
+let gethighscoreRouter     = require('./routes/getHighscore');
 
 mongoose.connect("mongodb+srv://webfrfinex:webfrfinex@webfrfinalproject.krvha.mongodb.net/webfrfinex?retryWrites=true&w=majority")
     .then(()=> {

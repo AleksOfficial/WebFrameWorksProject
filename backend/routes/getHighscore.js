@@ -29,3 +29,5 @@ const validateToken = async function (email, token) {
   console.log(data != undefined && data[0].token == token);
   return data != undefined && data[0].token == token;
 }
+
+module.exports = app;
