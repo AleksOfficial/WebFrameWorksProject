@@ -83,12 +83,10 @@ app.get("/checklogin", async function (req, res, next) {
         });
     } else {
         if (await validateToken(req.query.email, req.query.token)) {
-            console.log("valid token is true");
             res.status(200).json({
                 valid: true
             });
         } else {
-            console.log("valid token is false");
             res.status(401).json({
                 valid: false
             });
@@ -163,8 +161,8 @@ app.get("/getUserData", (req, res, next) => {
         });
     } else {
         if (validateToken(req.query.email, req.query.token)) {
-            UserData.find(req.query.email).then((docs)=> {
-                res.status.json(docs[0]);
+            UserData.find({email: req.query.email}).then((docs)=> {
+                res.status(200).json(docs[0]);
             });
         }
     }
@@ -208,9 +206,6 @@ const addHighScore = async function(highScore, email) {
 }        
 
 const validateToken = async function (email, token) {
-    console.log(token);
     const data = await UserData.find({email:email});
-    console.log(data[0]);
-    console.log(data != undefined && data[0].token == token);
     return data != undefined && data[0].token == token;
 }
