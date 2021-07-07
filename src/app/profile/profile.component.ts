@@ -17,6 +17,7 @@ export class ProfileComponent implements OnInit {
   postcode: string = "unknown";
   highestScore: string = "unknown";
   isLoggedIn = false;
+  isLoading = true;
 
   constructor(private http: HttpClient) { }
 
@@ -29,6 +30,7 @@ export class ProfileComponent implements OnInit {
         next: (responseData) => {
             if (responseData.valid) {
               this.isLoggedIn = true;
+              this.isLoading = false;
               this.httpOptions.params.append("email", localStorage.getItem("email")!);
               this.httpOptions.params.append("currentToken", localStorage.getItem("authenticationToken")!);
               this.getProfileData();
@@ -36,6 +38,7 @@ export class ProfileComponent implements OnInit {
           },
         error: (err) => {
           this.isLoggedIn = false;
+          this.isLoading = false;
         }
       });
     }
@@ -45,10 +48,18 @@ export class ProfileComponent implements OnInit {
     if (this.isLoggedIn) {
       let email = localStorage.getItem("email")!;
       let token = localStorage.getItem("authenticationToken")!;
-      this.http.get<{ highScores: any[] }>("http://localhost:3000/getUserData?email=" + email + "&token=" + token, this.httpOptions)
+      this.http.get<{ 
+        email: string,
+        street: string,
+        city: string,
+        postcode: string
+       }>("http://localhost:3000/getUserData?email=" + email + "&token=" + token, this.httpOptions)
           .subscribe({
             next: (responseData) => {
-              console.log(responseData);
+              this.email = responseData.email;
+              this.street = responseData.street != "" ? responseData.street : "unknown";
+              this.city = responseData.city != "" ? responseData.city : "unknown";
+              this.postcode = responseData.postcode != "" ? responseData.postcode : "unknown";
             },
             error: (err)=> {
               console.log(err);

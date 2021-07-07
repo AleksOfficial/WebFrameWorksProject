@@ -42,7 +42,7 @@
         </tr>
     </table>
 </div>
-<div *ngIf="!this.isLoggedIn" class="profile-info">
+<div *ngIf="!this.isLoggedIn && !this.isLoading" class="profile-info">
     <br />
     This page is only visible after login!
 </div>
