@@ -152,6 +152,21 @@ app.delete("/logout", (req, res, next)=> {
     }
 });
 
+
+app.get("/getUserData", (req, res, next) => {
+    if (req.query.email == undefined || req.query.token == undefined) {
+        res.status(400).json({
+            message: "Username or token missing!"
+        });
+    } else {
+        if (validateToken(req.query.email, req.query.token)) {
+            UserData.find(req.query.email).then((docs)=> {
+                res.status.json(docs[0]);
+            });
+        }
+    }
+});
+
 module.exports = app;
 
 const login = async function(username, password) {
