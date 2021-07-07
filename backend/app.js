@@ -12,6 +12,7 @@ let getuserdataRouter   = require('./routes/getUserData');
 let loginRouter         = require('./routes/login');
 let checkloginRouter    = require('./routes/checklogin');
 let logoutRouter        = require('./routes/logout');
+let gethighscoreRouter     = require('./routes/highscore');
 
 mongoose.connect("mongodb+srv://webfrfinex:webfrfinex@webfrfinalproject.krvha.mongodb.net/webfrfinex?retryWrites=true&w=majority")
     .then(()=> {
@@ -31,6 +32,7 @@ app.use('/getUserData', getuserdataRouter);
 app.use('/login',       loginRouter);
 app.use('/checklogin',  checkloginRouter);
 app.use('/logout',      logoutRouter);
+app.use('/getHighscore', gethighscoreRouter);
 
 const login = async function(username, password) {
     let authenticationToken = null;

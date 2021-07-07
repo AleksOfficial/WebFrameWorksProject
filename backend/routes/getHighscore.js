@@ -1,5 +1,6 @@
 var express = require('express');
 var app = express.Router();
+const Highscore = require('../schemas/highscore')
 const UserData = require('../schemas/user-data')
 
 app.get("/", (req, res, next) => {
@@ -10,12 +11,16 @@ app.get("/", (req, res, next) => {
       });
   } else {
       if (validateToken(req.query.email, req.query.token)) {
-          UserData.find(req.query.email).then((docs)=> {
-            res.status(200).json(docs[0]);
+          Highscore.find({email:req.query.email}).sort({value:'desc'}).then((docs)=> {
+            if(docs.length>0)
+              res.status(200).json(docs[0]);
+            else
+              res.status(404).json({message: "Error: No Highscores found with from that account"});
           });
       }
   }
 });
+
 
 const validateToken = async function (email, token) {
   console.log(token);
@@ -24,5 +29,3 @@ const validateToken = async function (email, token) {
   console.log(data != undefined && data[0].token == token);
   return data != undefined && data[0].token == token;
 }
-
-module.exports = app;
