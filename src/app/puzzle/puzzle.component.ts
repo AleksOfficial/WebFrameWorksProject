@@ -1,6 +1,8 @@
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { Game, Tile } from './classes';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-puzzle',
@@ -8,6 +10,9 @@ import { Game, Tile } from './classes';
   styleUrls: ['./puzzle.component.css']
 })
 export class PuzzleComponent implements OnInit {
+  httpOptions = {
+    headers: new HttpHeaders({ "content-type":"application/json" })
+  };
 
   paths: string[] = [];
   basepath: "puzzle1/" | "puzzle2/" = "puzzle1/";
@@ -19,7 +24,7 @@ export class PuzzleComponent implements OnInit {
   minutes: number = 0;
   timeFunction: any;
 
-  constructor(private _auth: AuthService) {}
+  constructor(private _auth: AuthService, private http: HttpClient, private snackBar: MatSnackBar) {}
 
   ngOnInit(): void {
     for (let i = 1; i <= 9; i++) {
@@ -55,15 +60,16 @@ export class PuzzleComponent implements OnInit {
     if (this.game.checkForWin()) {
       this.started = false;
       clearInterval(this.timeFunction);
-      this.addHighscore();
+      let score: number = 100 - (this.hundreths / 100) - this.seconds - (this.minutes * 60);
+      this.addHighscore(score > 0 ? score : 0);
     }
   }
 
-  addHighscore() {
+  addHighscore(highScore: number) {
       this.http.post<{ message: string }>("http://localhost:3000/highscore", {
         email: localStorage.getItem("email"),
         currentToken: localStorage.getItem("authenticationToken"),
-        highScore: parseInt(this.highScore.value)
+        highScore: highScore
       }, this.httpOptions).subscribe({
         next: (responseData) => {
             this.openSnackBar(responseData.message, 3000);
@@ -72,6 +78,10 @@ export class PuzzleComponent implements OnInit {
           this.openSnackBar(err.error.message, 3000);
         }
       });
+  }
+
+  openSnackBar(message: string, duration: number) {
+    this.snackBar.open(message, '', { duration: duration });
   }
 
   clickImage(n: number, event: MouseEvent) {
