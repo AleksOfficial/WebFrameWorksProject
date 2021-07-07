@@ -1,8 +1,6 @@
 const express = require('express');
 const cors = require('cors');
 const app = express();
-const store = require('store');
-store.set("highScores", { highScores: [] });
 const mongoose = require('mongoose');
 
 const Highscore = require('./schemas/highscore');
@@ -102,9 +100,8 @@ app.post("/highscore", (req, res, next)=> {
             message: "Username, token or highscore missing or wrong format!"
         });
     } else {
-        if (store.get(req.body.email).currentToken == req.body.currentToken) {
+        if (validateToken(req.body.email , req.body.currentToken)) {
             addHighScore(req.body.highScore, req.body.email);
-            console.log(store.get("highScores"));
             res.status(200).json({
                 message: "Highscore added!"
             });
@@ -123,7 +120,7 @@ app.get("/highscore", (req, res, next)=> {
         });
     } else {
         if (validateToken(req.query.email, req.query.token)) {
-            Highscore.find().then( (docs) => {
+            Highscore.find().sort({value: "desc"}).then( (docs) => {
                 let r = { highScores:docs };
                 res.status(200).json(r);
             }
@@ -143,9 +140,7 @@ app.delete("/logout", (req, res, next)=> {
         });
     } else {
         if (validateToken(req.query.email, req.query.token)) {
-            let userdata = store.get(req.query.email);
-            userdata.currentToken = "";
-            store.set(req.query.email, userdata);
+            let userdata = UserData.findOneAndUpdate({email:req.query.email}, {token: ''});
             res.status(200).json({
                 message: "Logout successful!"
             });
@@ -169,13 +164,30 @@ const login = async function(username, password) {
     return authenticationToken;
 }
 
-const addHighScore = async function(highScore, userName) {
+const addHighScore = async function(highScore, email) {
+    const x = await Highscore.find().sort({value:"desc"});
+    if (x.length>=10)
+    {
+        if(x[x.length-1].value<highScore)
+        {
+            //delete last value
+            const _ = await Highscore.findOneAndRemove({email: x[9].email, value: x[9].value});
+        }
+        else 
+        {
+            const _ = await Highscore.find({email:email}).sort({value:"desc"});
+            if(highScore<_.value)
+                return;
+            else
+                await Highscore.findOneAndRemove({email: email, value: _.value});
+        };
+    }
     const newHighscore = new Highscore({
-        email: userName,
+        email: email,
         value: highScore
     });
-    await newHighscore.save();
-}
+    const __ = await newHighscore.save();
+}        
 
 const validateToken = async function (email, token) {
     const data = await UserData.find({email:email});
