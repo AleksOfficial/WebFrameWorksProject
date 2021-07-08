@@ -12,7 +12,7 @@ export class HighscoresComponent implements OnInit {
     params: new HttpParams()
   };
   highScores: any[] = [];
-  isLoading: boolean = false;
+  isLoading: boolean = true;
   puzzle: 1 | 2 = 1;
   highScoresPuzzle1: any[] = [];
   highScoresPuzzle2: any[] = [];
@@ -33,6 +33,7 @@ export class HighscoresComponent implements OnInit {
             .subscribe({
               next: (responseData) => {
                 this.highScoresPuzzle2 = responseData.highScores;
+                this.isLoading = false;
   
               },
               error: (err)=> {

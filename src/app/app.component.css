@@ -9,3 +9,7 @@ mat-toolbar a {
 .logo {
   margin: 10px;
 }
+
+mat-toolbar {
+  padding: 10px;
+}
