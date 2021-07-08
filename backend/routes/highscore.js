@@ -27,16 +27,12 @@ app.post("/", async function(req, res, next) {
 app.get("/", (req, res, next) => {
     Highscore.find({puzzle:req.query.puzzle}).sort({value: "desc"}).then( (docs) => {
         let r = { highScores:docs };
-        console.log(req.query.puzzle);
         res.status(200).json(r);
     });
 });
 
 const validateToken = async function (email, token) {
-  console.log(token);
   const data = await UserData.find({email:email});
-  console.log(data[0]);
-  console.log(data != undefined && data[0].token == token);
   return data != undefined && data[0].token == token;
 }
 

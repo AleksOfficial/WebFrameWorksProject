@@ -9,6 +9,7 @@ app.delete("/", (req, res, next)=> {
       });
   } else {
       if (validateToken(req.query.email, req.query.token)) {
+          //Set token logged in the DB to nothing
           let userdata = UserData.findOneAndUpdate({email:req.query.email}, {token: ''});
           res.status(200).json({
               message: "Logout successful!"
@@ -22,10 +23,7 @@ app.delete("/", (req, res, next)=> {
 });
 
 const validateToken = async function (email, token) {
-  console.log(token);
   const data = await UserData.find({email:email});
-  console.log(data[0]);
-  console.log(data != undefined && data[0].token == token);
   return data != undefined && data[0].token == token;
 }
 module.exports = app;

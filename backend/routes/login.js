@@ -9,6 +9,7 @@ app.post("/", async function(req, res, next) {
           message: "Username or password missing!"
       });
   } else {
+      //find user & create authentication token, set it in DB and return as JSON
       let authenticationToken = await login(req.body.email, req.body.password);
       if (authenticationToken != null){
           res.status(200).json({
