@@ -39,6 +39,7 @@ export class PuzzleComponent implements OnInit {
     this.game.shuffle();
     this.updatePaths();
     this.started = true;
+    //clock
     this.timeFunction = setInterval(()=>{
       this.hundreths += 20;
       if (this.hundreths % 100 == 0) {
@@ -52,11 +53,13 @@ export class PuzzleComponent implements OnInit {
     }, 200);
   }
 
+  //update image-paths according to games state
   updatePaths() {
     let tiles = this.game.getTiles();
     for (let i = 0; i < 9; i++) {
       this.paths[i] = this.basepath + "img" + tiles[i].getID() + ".jpg";
     }
+    //stop timer and send highscore if game is won
     if (this.started && this.game.checkForWin()) {
       this.started = false;
       clearInterval(this.timeFunction);
@@ -96,6 +99,7 @@ export class PuzzleComponent implements OnInit {
     }
   }
 
+  //changes basepath to load different images
   changePuzzle(n: 1 | 2) {
     this.puzzle = n;
     if (n == 1) {

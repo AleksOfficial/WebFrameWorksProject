@@ -30,6 +30,7 @@ export class ProfileComponent implements OnInit {
     if (this._auth.loggedIn) {
       let email = localStorage.getItem("email")!;
       let token = localStorage.getItem("authenticationToken")!;
+      //get profile data
       this.http.get<{ 
         email: string,
         street: string,
@@ -48,13 +49,13 @@ export class ProfileComponent implements OnInit {
               console.log(err);
             }
           });
+      //get highest highscore
       this.http.get<{ 
         email: string,
         value: number
        }>("http://localhost:3000/getHighscore?email=" + email + "&token=" + token, this.httpOptions)
           .subscribe({
             next: (responseData) => {
-              console.log(responseData);
               this.highestScore = responseData.value.toString();
               this.highscoreLoaded = true;
             },

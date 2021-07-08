@@ -47,7 +47,6 @@ export class LoginComponent implements OnInit {
     }, this.httpOptions).subscribe({
       next: (responseData) => {
         this._auth.openSnackBar(responseData.message, 3000);
-        console.log(responseData.currentToken);
         localStorage.setItem("authenticationToken", responseData.currentToken);
         localStorage.setItem("email", this.email.value);
         this._auth.ngOnInit();

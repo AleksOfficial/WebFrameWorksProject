@@ -12,34 +12,38 @@ export class HighscoresComponent implements OnInit {
     params: new HttpParams()
   };
   highScores: any[] = [];
-  isLoading: boolean = true;
+  puzzle1Loaded: boolean = false;
+  puzzle2Loaded: boolean = false;
   puzzle: 1 | 2 = 1;
   highScoresPuzzle1: any[] = [];
   highScoresPuzzle2: any[] = [];
 
   getHighScores() {
+    //get highscores from puzzle 1
     this.http.get<{ highScores: any[] }>("http://localhost:3000/highscore?puzzle=1", this.httpOptions)
         .subscribe({
           next: (responseData) => {
             this.highScores = responseData.highScores;
             this.highScoresPuzzle1 = this.highScores;
+            this.puzzle1Loaded = true;
 
           },
           error: (err)=> {
             console.log(err);
           }
         });
-        this.http.get<{ highScores: any[] }>("http://localhost:3000/highscore?puzzle=2", this.httpOptions)
-            .subscribe({
-              next: (responseData) => {
-                this.highScoresPuzzle2 = responseData.highScores;
-                this.isLoading = false;
-  
-              },
-              error: (err)=> {
-                console.log(err);
-              }
-            });
+    //get highscores from puzzle 2
+    this.http.get<{ highScores: any[] }>("http://localhost:3000/highscore?puzzle=2", this.httpOptions)
+        .subscribe({
+          next: (responseData) => {
+            this.highScoresPuzzle2 = responseData.highScores;
+            this.puzzle2Loaded = true;
+
+          },
+          error: (err)=> {
+            console.log(err);
+          }
+        });
   }
 
   constructor(private http: HttpClient) { }

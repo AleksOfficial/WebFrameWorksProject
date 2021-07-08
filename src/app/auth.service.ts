@@ -20,6 +20,7 @@ export class AuthService {
   };
   loggedIn: boolean = false;
 
+  //can be called multiple times to update authentication-status
   ngOnInit(): void {
     this.loggedIn = false;
     let email = localStorage.getItem("email");

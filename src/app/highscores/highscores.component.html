@@ -1,6 +1,6 @@
 <mat-card>
-    <mat-spinner *ngIf="isLoading"></mat-spinner>
-    <div class="main" *ngIf="!isLoading">
+    <mat-spinner *ngIf="!this.puzzle1Loaded || !this.puzzle2Loaded"></mat-spinner>
+    <div class="main" *ngIf="this.puzzle1Loaded && this.puzzle2Loaded">
         <h1>
             Highscores
         </h1>
