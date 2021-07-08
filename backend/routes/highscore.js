@@ -10,7 +10,7 @@ app.post("/", async function(req, res, next) {
       });
   } else {
       if (await validateToken(req.body.email , req.body.currentToken)) {
-          addHighScore(req.body.highScore, req.body.email);
+          addHighScore(req.body.highScore, req.body.email, req.body.puzzle);
           res.status(200).json({
               message: "Highscore added!"
           });
@@ -22,14 +22,14 @@ app.post("/", async function(req, res, next) {
   }
 });
 
-app.get("/", (req, res, next)=> {
+app.get("/", async function (req, res, next) {
   if (req.query.email == undefined || req.query.token == undefined) {
       res.status(400).json({
           message: "Username or token missing!"
       });
   } else {
-      if (validateToken(req.query.email, req.query.token)) {
-          Highscore.find().sort({value: "desc"}).then( (docs) => {
+      if (await validateToken(req.query.email, req.query.token)) {
+          Highscore.find({puzzle:req.body.puzzle}).sort({value: "desc"}).then( (docs) => {
               let r = { highScores:docs };
               res.status(200).json(r);
           }
@@ -51,10 +51,11 @@ const validateToken = async function (email, token) {
 }
 
   
-const addHighScore = async function(highScore, email) {
+const addHighScore = async function(highScore, email, puzzle) {
   const newHighscore = new Highscore({
       email: email,
-      value: highScore
+      value: highScore,
+      puzzle: puzzle
   });
   const __ = await newHighscore.save();
 }        
