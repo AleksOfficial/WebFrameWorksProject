@@ -14,3 +14,7 @@ a {
   border-width: 3px;
   border-style: solid;
 }
+
+button {
+  margin: 10px;
+}

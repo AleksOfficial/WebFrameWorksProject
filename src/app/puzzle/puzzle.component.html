@@ -12,8 +12,8 @@
         </mat-grid-list>
         <div class="start" *ngIf="!started">
             <button mat-raised-button color="accent" type="button" (click)="start()">Start</button><br />
-            <button mat-raised-button color="basic" type="button" (click)="changePuzzle(1)" *ngIf="!started">Puzzle 1</button>
-            <button mat-raised-button color="basic" type="button" (click)="changePuzzle(2)" *ngIf="!started">Puzzle 2</button>
+            <button mat-raised-button color="{{ this.puzzle == 1 ? 'primary' : 'basic' }}" type="button" (click)="changePuzzle(1)" *ngIf="!started">Puzzle 1</button>
+            <button mat-raised-button color="{{ this.puzzle == 2 ? 'primary' : 'basic' }}" type="button" (click)="changePuzzle(2)" *ngIf="!started">Puzzle 2</button>
         </div>
     </div>
 </mat-card>

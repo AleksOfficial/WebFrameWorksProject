@@ -7,7 +7,10 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
-import { UserSpaceComponent } from './user-space/user-space.component';
+import { ProfileComponent } from './profile/profile.component';
+import { FaqComponent } from './faq/faq.component';
+import { HighscoresComponent } from './highscores/highscores.component';
+import { PuzzleComponent } from './puzzle/puzzle.component';
 
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -18,22 +21,19 @@ import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { HighscoresComponent } from './highscores/highscores.component';
-import { PuzzleComponent } from './puzzle/puzzle.component';
-import {MatGridListModule} from '@angular/material/grid-list';
-import { ProfileComponent } from './profile/profile.component';
-import { FaqComponent } from './faq/faq.component';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     SignupComponent,
-    UserSpaceComponent,
     HighscoresComponent,
     PuzzleComponent,
     ProfileComponent,
-    FaqComponent
+    FaqComponent,
+    PageNotFoundComponent
   ],
   imports: [
     BrowserModule,

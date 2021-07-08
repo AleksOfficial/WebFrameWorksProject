@@ -28,7 +28,6 @@ export class AuthService {
       this._http.get<{ valid: boolean }>("http://localhost:3000/checklogin?email=" + email + "&token=" + token, 
                     this.httpOptions).subscribe({
           next: (responseData) => {
-              console.log(responseData);
               if (responseData.valid) {
                 this.loggedIn = true;
               }

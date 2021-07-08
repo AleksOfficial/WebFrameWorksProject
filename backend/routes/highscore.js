@@ -4,9 +4,11 @@ const Highscore = require('../schemas/highscore')
 const UserData = require('../schemas/user-data')
 
 app.post("/", async function(req, res, next) {
-  if (req.body.email == undefined || req.body.currentToken == undefined || req.body.highScore == undefined || typeof req.body.highScore != "number") {
+  if (req.body.email == undefined || req.body.currentToken == undefined 
+    || req.body.highScore == undefined || typeof req.body.highScore != "number"
+    || req.body.puzzle == undefined || typeof req.body.puzzle != "number") {
       res.status(400).json({
-          message: "Username, token or highscore missing or wrong format!"
+          message: "Username, token, puzzle or highscore missing or wrong format!"
       });
   } else {
       if (await validateToken(req.body.email , req.body.currentToken)) {
@@ -22,24 +24,12 @@ app.post("/", async function(req, res, next) {
   }
 });
 
-app.get("/", async function (req, res, next) {
-  if (req.query.email == undefined || req.query.token == undefined) {
-      res.status(400).json({
-          message: "Username or token missing!"
-      });
-  } else {
-      if (await validateToken(req.query.email, req.query.token)) {
-          Highscore.find({puzzle:req.body.puzzle}).sort({value: "desc"}).then( (docs) => {
-              let r = { highScores:docs };
-              res.status(200).json(r);
-          }
-          );
-      } else {
-          res.status(401).json({
-              message: "Error validating user. Please log in to see highscores!"
-          });
-      }
-  }
+app.get("/", (req, res, next) => {
+    Highscore.find({puzzle:req.query.puzzle}).sort({value: "desc"}).then( (docs) => {
+        let r = { highScores:docs };
+        console.log(req.query.puzzle);
+        res.status(200).json(r);
+    });
 });
 
 const validateToken = async function (email, token) {

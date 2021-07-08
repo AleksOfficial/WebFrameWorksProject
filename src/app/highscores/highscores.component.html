@@ -12,6 +12,8 @@
             </ol>
         </div>
         
+    <button mat-raised-button color="{{ this.puzzle == 1 ? 'primary' : 'basic' }}" type="button" (click)="changePuzzle(1)">Puzzle 1</button>
+    <button mat-raised-button color="{{ this.puzzle == 2 ? 'primary' : 'basic' }}" type="button" (click)="changePuzzle(2)">Puzzle 2</button><br />
     <a mat-raised-button color="basic" type="button" routerLink="/">Back to game</a>
     </div>
 </mat-card>

@@ -13,22 +13,32 @@ export class HighscoresComponent implements OnInit {
   };
   highScores: any[] = [];
   isLoading: boolean = false;
+  puzzle: 1 | 2 = 1;
+  highScoresPuzzle1: any[] = [];
+  highScoresPuzzle2: any[] = [];
 
   getHighScores() {
-      let email = localStorage.getItem("email")!;
-      let token = localStorage.getItem("authenticationToken")!;
-      console.log(email + " " + token);
-      this.http.get<{ highScores: any[] }>("http://localhost:3000/highscore?email=" + email + "&token=" + token, this.httpOptions)
-          .subscribe({
-            next: (responseData) => {
-              console.log(responseData);
-              this.highScores = responseData.highScores;
+    this.http.get<{ highScores: any[] }>("http://localhost:3000/highscore?puzzle=1", this.httpOptions)
+        .subscribe({
+          next: (responseData) => {
+            this.highScores = responseData.highScores;
+            this.highScoresPuzzle1 = this.highScores;
 
-            },
-            error: (err)=> {
-              console.log(err);
-            }
-          });
+          },
+          error: (err)=> {
+            console.log(err);
+          }
+        });
+        this.http.get<{ highScores: any[] }>("http://localhost:3000/highscore?puzzle=2", this.httpOptions)
+            .subscribe({
+              next: (responseData) => {
+                this.highScoresPuzzle2 = responseData.highScores;
+  
+              },
+              error: (err)=> {
+                console.log(err);
+              }
+            });
   }
 
   constructor(private http: HttpClient) { }
@@ -37,4 +47,12 @@ export class HighscoresComponent implements OnInit {
     this.getHighScores();
    }
 
+   changePuzzle(n: 1 | 2) {
+    this.puzzle = n;
+    if (n == 1) {
+      this.highScores = this.highScoresPuzzle1;
+    } else {
+      this.highScores = this.highScoresPuzzle2;
+    }
+  }
 }

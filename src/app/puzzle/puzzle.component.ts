@@ -61,15 +61,16 @@ export class PuzzleComponent implements OnInit {
       this.started = false;
       clearInterval(this.timeFunction);
       let score: number = 100 - (this.hundreths / 100) - this.seconds - (this.minutes * 60);
-      this.addHighscore(score > 0 ? score : 0);
+      this.addHighscore(score > 0 ? score : 0, this.puzzle);
     }
   }
 
-  addHighscore(highScore: number) {
+  addHighscore(highScore: number, puzzle: number) {
       this.http.post<{ message: string }>("http://localhost:3000/highscore", {
         email: localStorage.getItem("email"),
         currentToken: localStorage.getItem("authenticationToken"),
-        highScore: highScore
+        highScore: highScore,
+        puzzle: puzzle
       }, this.httpOptions).subscribe({
         next: (responseData) => {
             this._auth.openSnackBar(responseData.message, 3000);
