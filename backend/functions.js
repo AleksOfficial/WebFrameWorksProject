@@ -1,3 +1,13 @@
+//Since there was a problem last time already with the reference errors, this time, we will just have the functions here
+//everywhere they are used, copy and paste them. Bad Practise, but better be safe than sorry. 
+//Alternatively it would be possible to define these functions as controllers and export them as modules so they can be used like this:
+//app.login(bob, 123); 
+//But again, we stick to this method for now. 
+
+
+
+//login finds the user with the combination of username and password - YES they are saved in clear text. bad practise again but for now this will do.
+//Then returns a token to authenticate the user and saves the current authentication token in the database
 const login = async function(username, password) {
   let authenticationToken = null;
   const query = await UserData.find({email:username, password:password})
@@ -8,35 +18,18 @@ const login = async function(username, password) {
   return authenticationToken;
 }
 
-const addHighScore = async function(highScore, email) {
-  const x = await Highscore.find().sort({value:"desc"});
-  if (x.length>=10)
-  {
-      if(x[x.length-1].value<highScore)
-      {
-          //delete last value
-          const _ = await Highscore.findOneAndRemove({email: x[9].email, value: x[9].value});
-      }
-      else 
-      {
-          const _ = await Highscore.find({email:email}).sort({value:"desc"});
-          if(highScore<_.value)
-              return;
-          else
-              await Highscore.findOneAndRemove({email: email, value: _.value});
-      };
-  }
+//adds Highscore to the database, puzzle = which puzzle this highscore belongs to
+const addHighScore = async function(highScore, email, puzzle) {
   const newHighscore = new Highscore({
       email: email,
-      value: highScore
+      value: highScore,
+      puzzle: puzzle
   });
   const __ = await newHighscore.save();
-}        
+}  
 
+//looks for the current token in the database and compares it with the local storage
 const validateToken = async function (email, token) {
-  console.log(token);
   const data = await UserData.find({email:email});
-  console.log(data[0]);
-  console.log(data != undefined && data[0].token == token);
   return data != undefined && data[0].token == token;
 }

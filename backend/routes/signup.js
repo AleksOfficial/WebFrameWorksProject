@@ -2,18 +2,22 @@ var express = require('express');
 var app = express.Router();
 const UserData = require('../schemas/user-data');
 
+//registeres user
 app.post("/",  async function (req, res, next) {
   if (req.body.email == undefined || req.body.password == undefined) {
-      res.status(400).json({
+        //request was sent without email or password
+        res.status(400).json({
           message: "Username or password missing!"
       });
   } else {
+      //Search if user already exists in DB
       const data = await UserData.find({email: req.body.email});
       if(data.length > 0) {
               res.status(409).json({
                   message: "Account already exists!"
               });
       } else {
+          //generate new user without token
           const userdata = new UserData( {
               email: req.body.email,
               password: req.body.password,
@@ -23,6 +27,7 @@ app.post("/",  async function (req, res, next) {
               token: ''
           });
           const ret = await userdata.save();
+          //loginW user and generate token
           let authenticationToken = await login(req.body.email,req.body.password);
           if (authenticationToken != null){
               res.status(200).json({
