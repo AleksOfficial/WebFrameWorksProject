@@ -14,13 +14,12 @@
       <a mat-raised-button color="primary" type="button" routerLink="/signup" *ngIf="!this._auth.loggedIn">Sign Up</a>
     </div>
     <div fxShow="true" fxHide.gt-sm="true">
-      <a (click)="sidenav.toggle()">
-        <button mat-icon-button color="accent" aria-label="Menu">
+        <button mat-icon-button color="accent" aria-label="Menu" (click)="sidenav.toggle()">
           <mat-icon>menu</mat-icon>
-        </button></a>
+        </button>
     </div>
 </mat-toolbar>
-<mat-sidenav-container fxFlexFill class="example-container">
+<mat-sidenav-container fxFlexFill class="example-container" [ngStyle]="{'height':'auto'}">
   <mat-sidenav #sidenav fxLayout="column" mode="side" opened="false">
     <div fxLayout="column">
       <a mat-button routerLink="/">Play Puzzle</a>
@@ -34,5 +33,6 @@
     </div>
   </mat-sidenav>
   <mat-sidenav-content fxFlexFill>
-    <router-outlet></router-outlet></mat-sidenav-content>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
 </mat-sidenav-container>

@@ -17,6 +17,8 @@ export class ProfileComponent implements OnInit {
   city: string = "unknown";
   postcode: string = "unknown";
   highestScore: string = "unknown";
+  dataLoaded = false;
+  highscoreLoaded = false;
 
   constructor(private http: HttpClient, public _auth: AuthService) { }
 
@@ -40,6 +42,7 @@ export class ProfileComponent implements OnInit {
               this.street = responseData.street != "" ? responseData.street : "unknown";
               this.city = responseData.city != "" ? responseData.city : "unknown";
               this.postcode = responseData.postcode != "" ? responseData.postcode : "unknown";
+              this.dataLoaded = true;
             },
             error: (err)=> {
               console.log(err);
@@ -53,6 +56,7 @@ export class ProfileComponent implements OnInit {
             next: (responseData) => {
               console.log(responseData);
               this.highestScore = responseData.value.toString();
+              this.highscoreLoaded = true;
             },
             error: (err)=> {
               console.log(err);

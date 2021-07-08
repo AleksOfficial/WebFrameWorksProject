@@ -1,4 +1,5 @@
-<div class="profile-info" *ngIf="this._auth.loggedIn">
+<mat-spinner *ngIf="(!this.dataLoaded || !this.highscoreLoaded) && this._auth.loggedIn"></mat-spinner>
+<div class="profile-info" *ngIf="this._auth.loggedIn && this.dataLoaded && this.highscoreLoaded">
     <table>
         <tr>
             <td class="bold">
