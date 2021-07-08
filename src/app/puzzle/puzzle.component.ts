@@ -81,6 +81,9 @@ export class PuzzleComponent implements OnInit {
   }
 
   clickImage(n: number, event: MouseEvent) {
+    if (!this.started) {
+      return;
+    }
     if (this.choice1 < 0) {
       this.choice1 = n;
       (event.target as Element).classList.add("selected");
