@@ -24,6 +24,7 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit(): void {
     this.getProfileData();
+    this._auth.ngOnInit();
   }
 
   getProfileData() {
