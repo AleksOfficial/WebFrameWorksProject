@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { AuthService } from './auth.service';
 
@@ -8,13 +9,10 @@ import { AuthService } from './auth.service';
 })
 export class AppComponent {
 
-  constructor(public _auth: AuthService) {}
+  constructor(public _auth: AuthService, private _http: HttpClient) {}
 
   loggedIn: boolean = false;
 
-  ngOnInit(): void {
-    this.loggedIn = this._auth.isLoggedIn();
-  }
+  ngOnInit(): void { }
 
-  title = 'FHTW Puzzle Game';
 }

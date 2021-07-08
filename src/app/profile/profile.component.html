@@ -1,4 +1,4 @@
-<div class="profile-info" *ngIf="this.isLoggedIn">
+<div class="profile-info" *ngIf="this._auth.loggedIn">
     <table>
         <tr>
             <td class="bold">
@@ -42,7 +42,7 @@
         </tr>
     </table>
 </div>
-<div *ngIf="!this.isLoggedIn && !this.isLoading" class="profile-info">
+<div *ngIf="!this._auth.loggedIn" class="profile-info">
     <br />
     This page is only visible after login!
 </div>

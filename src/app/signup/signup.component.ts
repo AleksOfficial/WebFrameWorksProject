@@ -4,6 +4,7 @@ import { MustMatch } from '../_helpers/must-match.validator';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-signup',
@@ -66,26 +67,24 @@ export class SignupComponent implements OnInit {
         postcode: this.registerForm.get("postcode")!.value
       }, this.httpOptions).subscribe({
         next: (responseData) => {
-            this.openSnackBar(responseData.message, 3000);
+            this._auth.openSnackBar(responseData.message, 3000);
             localStorage.setItem("authenticationToken", responseData.token);
             localStorage.setItem("email", this.registerForm.get("email")!.value);
-            this.router.navigate(["/supersecretprivateuserspace"]);
+            this._auth.ngOnInit();
+            this.router.navigate(["/"]);
           },
         error: (err) => {
-          this.openSnackBar(err.error.message, 3000);
+          this._auth.openSnackBar(err.error.message, 3000);
         }
       });
     }
   }
 
-  openSnackBar(message: string, duration: number) {
-    this.snackBar.open(message, '', { duration: duration });
-  }
-
   constructor(private formBuilder: FormBuilder, 
               private http: HttpClient,
               private snackBar: MatSnackBar,
-              private router: Router) { 
+              private router: Router,
+              private _auth: AuthService) { 
    }
 
   ngOnInit(): void {

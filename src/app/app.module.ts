@@ -22,6 +22,7 @@ import { HighscoresComponent } from './highscores/highscores.component';
 import { PuzzleComponent } from './puzzle/puzzle.component';
 import {MatGridListModule} from '@angular/material/grid-list';
 import { ProfileComponent } from './profile/profile.component';
+import { FaqComponent } from './faq/faq.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { ProfileComponent } from './profile/profile.component';
     UserSpaceComponent,
     HighscoresComponent,
     PuzzleComponent,
-    ProfileComponent
+    ProfileComponent,
+    FaqComponent
   ],
   imports: [
     BrowserModule,

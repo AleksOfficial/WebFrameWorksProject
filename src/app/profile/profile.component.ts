@@ -1,5 +1,6 @@
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-profile',
@@ -16,36 +17,15 @@ export class ProfileComponent implements OnInit {
   city: string = "unknown";
   postcode: string = "unknown";
   highestScore: string = "unknown";
-  isLoggedIn = false;
-  isLoading = true;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, public _auth: AuthService) { }
 
   ngOnInit(): void {
-    let email = localStorage.getItem("email");
-    let token = localStorage.getItem("authenticationToken");
-    if (email != null && token != null) {
-      this.http.get<{ valid: boolean }>("http://localhost:3000/checklogin?email=" + email + "&token=" + token, 
-            this.httpOptions).subscribe({
-        next: (responseData) => {
-            if (responseData.valid) {
-              this.isLoggedIn = true;
-              this.isLoading = false;
-              this.httpOptions.params.append("email", localStorage.getItem("email")!);
-              this.httpOptions.params.append("currentToken", localStorage.getItem("authenticationToken")!);
-              this.getProfileData();
-            }
-          },
-        error: (err) => {
-          this.isLoggedIn = false;
-          this.isLoading = false;
-        }
-      });
-    }
+    this.getProfileData();
   }
 
   getProfileData() {
-    if (this.isLoggedIn) {
+    if (this._auth.loggedIn) {
       let email = localStorage.getItem("email")!;
       let token = localStorage.getItem("authenticationToken")!;
       this.http.get<{ 

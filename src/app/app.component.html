@@ -1,10 +1,12 @@
-<h1>
-  {{ title }}
-</h1>
 <mat-toolbar>
     <span>FHTW Puzzle Game</span>
+    <a mat-raised-button color="accent" type="button" routerLink="/highscores">Highscores</a>
+    <a mat-raised-button color="primary" type="button" routerLink="/">Play Puzzle</a>
+    <a mat-raised-button color="primary" type="button" routerLink="/faq">FAQ</a>
     <span class="spacer"></span>
-    <a mat-raised-button color="primary" type="button" routerLink="/login">Login</a>
-    <a mat-raised-button color="primary" type="button" routerLink="/signup" *ngIf="!loggedIn">Sign Up</a>
+    <a mat-raised-button color="primary" type="button" routerLink="/login" *ngIf="!this._auth.loggedIn">Login</a>
+    <button mat-raised-button color="warn" type="button" (click)="this._auth.logout()" *ngIf="this._auth.loggedIn">Logout</button>
+    <a mat-raised-button color="primary" type="button" routerLink="/profile" *ngIf="this._auth.loggedIn">Profile</a>
+    <a mat-raised-button color="primary" type="button" routerLink="/signup" *ngIf="!this._auth.loggedIn">Sign Up</a>
 </mat-toolbar>
 <router-outlet></router-outlet>

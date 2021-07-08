@@ -3,6 +3,7 @@ import { FormControl, Validators, NgForm } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-login',
@@ -21,7 +22,8 @@ export class LoginComponent implements OnInit {
 
   constructor(private http: HttpClient,
               private snackBar: MatSnackBar,
-              private router: Router) {}
+              private router: Router,
+              private _auth: AuthService) {}
 
   getPasswordErrorMessage() {
     return this.password.hasError('required') ? 'You must enter a password' : '';
@@ -44,20 +46,17 @@ export class LoginComponent implements OnInit {
         password: this.password.value
     }, this.httpOptions).subscribe({
       next: (responseData) => {
-        this.openSnackBar(responseData.message, 3000);
+        this._auth.openSnackBar(responseData.message, 3000);
         console.log(responseData.currentToken);
         localStorage.setItem("authenticationToken", responseData.currentToken);
         localStorage.setItem("email", this.email.value);
-        this.router.navigate(["/supersecretprivateuserspace"]);
+        this._auth.ngOnInit();
+        this.router.navigate(["/"]);
         },
       error: (err) => {
-        this.openSnackBar(err.error.message, 3000);
+        this._auth.openSnackBar(err.error.message, 3000);
       }
     });
-  }
-
-  openSnackBar(message: string, duration: number) {
-    this.snackBar.open(message, '', { duration: duration });
   }
 
   ngOnInit(): void {

@@ -1,18 +1,19 @@
-<div class="game">
-    <button (click)="changePuzzle(1)" *ngIf="!started">Puzzle 1</button>
-    <button (click)="changePuzzle(2)" *ngIf="!started">Puzzle 2</button>
-    <div class="clock">
-        {{ (this.minutes > 9 ? "" : "0") + this.minutes }}:
-        {{ (this.seconds > 9 ? "" : "0") + this.seconds }}:
-        {{ (this.hundreths > 9 ? "" : "0") + this.hundreths }}
+<mat-card>
+    <div class="game">
+        <div class="clock">
+            {{ (this.minutes > 9 ? "" : "0") + this.minutes }}:
+            {{ (this.seconds > 9 ? "" : "0") + this.seconds }}:
+            {{ (this.hundreths > 9 ? "" : "0") + this.hundreths }}
+        </div>
+        <mat-grid-list cols="3" rowHeight="150px">
+            <mat-grid-tile *ngFor="let path of this.paths; let i = index">
+                <img src="./assets/{{ path }}" (click)="clickImage(i, $event)" id="{{ i }}" />
+            </mat-grid-tile>
+        </mat-grid-list>
+        <div class="start" *ngIf="!started">
+            <button mat-raised-button color="accent" type="button" (click)="start()">Start</button><br />
+            <button mat-raised-button color="basic" type="button" (click)="changePuzzle(1)" *ngIf="!started">Puzzle 1</button>
+            <button mat-raised-button color="basic" type="button" (click)="changePuzzle(2)" *ngIf="!started">Puzzle 2</button>
+        </div>
     </div>
-    <mat-grid-list cols="3" rowHeight="150px">
-        <mat-grid-tile *ngFor="let path of this.paths; let i = index">
-            <img src="./assets/{{ path }}" (click)="clickImage(i, $event)" id="{{ i }}" />
-        </mat-grid-tile>
-    </mat-grid-list>
-    <div class="start">
-        <button (click)="start()" *ngIf="!started">Start</button>
-        <button (click)="auth()">Auth</button>
-    </div>
-</div>
+</mat-card>

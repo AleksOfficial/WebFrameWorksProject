@@ -2,7 +2,6 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { Game, Tile } from './classes';
-import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-puzzle',
@@ -23,8 +22,9 @@ export class PuzzleComponent implements OnInit {
   seconds: number = 0;
   minutes: number = 0;
   timeFunction: any;
+  puzzle: 1 | 2 = 1;
 
-  constructor(private _auth: AuthService, private http: HttpClient, private snackBar: MatSnackBar) {}
+  constructor(private _auth: AuthService, private http: HttpClient) {}
 
   ngOnInit(): void {
     for (let i = 1; i <= 9; i++) {
@@ -57,7 +57,7 @@ export class PuzzleComponent implements OnInit {
     for (let i = 0; i < 9; i++) {
       this.paths[i] = this.basepath + "img" + tiles[i].getID() + ".jpg";
     }
-    if (this.game.checkForWin()) {
+    if (this.started && this.game.checkForWin()) {
       this.started = false;
       clearInterval(this.timeFunction);
       let score: number = 100 - (this.hundreths / 100) - this.seconds - (this.minutes * 60);
@@ -72,16 +72,12 @@ export class PuzzleComponent implements OnInit {
         highScore: highScore
       }, this.httpOptions).subscribe({
         next: (responseData) => {
-            this.openSnackBar(responseData.message, 3000);
+            this._auth.openSnackBar(responseData.message, 3000);
           },
         error: (err) => {
-          this.openSnackBar(err.error.message, 3000);
+          this._auth.openSnackBar("Could not save Highscore. Please Sign up or log in to save your highscores!", 3000);
         }
       });
-  }
-
-  openSnackBar(message: string, duration: number) {
-    this.snackBar.open(message, '', { duration: duration });
   }
 
   clickImage(n: number, event: MouseEvent) {
@@ -97,15 +93,12 @@ export class PuzzleComponent implements OnInit {
   }
 
   changePuzzle(n: 1 | 2) {
+    this.puzzle = n;
     if (n == 1) {
       this.basepath = 'puzzle1/';
     } else {
       this.basepath = 'puzzle2/';
     }
     this.updatePaths();
-  }
-
-  auth() {
-    console.log(this._auth.isLoggedIn());
   }
 }

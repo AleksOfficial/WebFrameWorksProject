@@ -1,14 +1,17 @@
 <mat-card>
     <mat-spinner *ngIf="isLoading"></mat-spinner>
-    <div *ngIf="!isLoading && isLoggedIn">
-        <ul>
-            <li *ngFor="let score of highScores">
-                {{score.email}} | {{score.value}}
-            </li>
-        </ul>
-        <a mat-raised-button color="accent" type="button" routerLink="/supersecretprivateuserspace">Back</a>
-    </div>
-    <div *ngIf="!isLoading && !isLoggedIn">
-        This page is only visible after login!
+    <div class="main" *ngIf="!isLoading">
+        <h1>
+            Highscores
+        </h1>
+        <div class="scores">
+            <ol>
+                <li *ngFor="let score of highScores | slice:0:10">
+                    {{score.email}} | {{score.value}}
+                </li>
+            </ol>
+        </div>
+        
+    <a mat-raised-button color="basic" type="button" routerLink="/">Back to game</a>
     </div>
 </mat-card>
