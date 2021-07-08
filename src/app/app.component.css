@@ -5,3 +5,7 @@
 mat-toolbar a {
   margin: 0 1em;
 }
+
+.logo {
+  margin: 10px;
+}
