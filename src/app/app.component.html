@@ -1,13 +1,13 @@
 <mat-toolbar>
     <a routerLink="/"><img src="./assets/logo.png" class="logo" /></a>
     <span>FHTW Puzzle Game</span>
-    <div fxFlex fxShow="'true'" fxHide.lt-md="'true'">
+    <div fxShow="'true'" fxHide.lt-md="'true'">
       <a mat-raised-button color="accent" type="button" routerLink="/highscores">Highscores</a>
       <a mat-raised-button color="primary" type="button" routerLink="/">Play Puzzle</a>
       <a mat-raised-button color="primary" type="button" routerLink="/faq">FAQ</a>
     </div>
       <span class="spacer"></span>
-    <div fxFlex fxShow="'true'" fxHide.lt-md="'true'">
+    <div fxShow="'true'" fxHide.lt-md="'true'">
       <a mat-raised-button color="primary" type="button" routerLink="/login" *ngIf="!this._auth.loggedIn">Login</a>
       <button mat-raised-button color="warn" type="button" (click)="this._auth.logout()" *ngIf="this._auth.loggedIn">Logout</button>
       <a mat-raised-button color="primary" type="button" routerLink="/profile" *ngIf="this._auth.loggedIn">Profile</a>
